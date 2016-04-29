@@ -1,0 +1,75 @@
+{
+  "name": "aurelia-hio-api",
+  "version": "0.0.1",
+  "description": "An aurelia plugin providing services for the hiveIO API",
+  "homepage": "https://github.com/hive-io/aurelia-hio-api",
+  "bugs": {
+    "url": "https://github.com/hive-io/aurelia-hio-api/issues"
+  },
+  "license": "MIT",
+  "author": "Matt Broadstone <mbroadst@gmail.com>",
+  "main": "dist/commonjs/aurelia-hio-api.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hive-io/aurelia-hio-api.git"
+  },
+  "jspm": {
+    "registry": "npm",
+    "main": "aurelia-hio-api",
+    "format": "amd",
+    "directories": {
+      "dist": "dist/amd"
+    },
+    "dependencies": {
+      "aurelia-dependency-injection": "1.0.0-beta.1.2.0",
+      "aurelia-fetch-client": "^1.0.0-beta.1.2.0",
+      "isomorphic-fetch": "^2.2.1"
+    },
+    "devDependencies": {
+      "babel": "babel-core@^5.8.24",
+      "babel-runtime": "^5.8.24",
+      "core-js": "^1.1.4"
+    }
+  },
+  "devDependencies": {
+    "aurelia-tools": "^0.1.22",
+    "babel-dts-generator": "^0.4.7",
+    "babel-eslint": "^6.0.2",
+    "babel-plugin-syntax-flow": "^6.5.0",
+    "babel-plugin-transform-decorators-legacy": "^1.3.4",
+    "babel-plugin-transform-es2015-modules-amd": "^6.6.5",
+    "babel-plugin-transform-es2015-modules-commonjs": "^6.7.4",
+    "babel-plugin-transform-es2015-modules-systemjs": "^6.6.5",
+    "babel-plugin-transform-flow-strip-types": "^6.7.0",
+    "babel-preset-es2015": "^6.6.0",
+    "babel-preset-es2015-loose": "^7.0.0",
+    "babel-preset-stage-1": "^6.5.0",
+    "conventional-changelog": "^1.1.0",
+    "del": "^2.2.0",
+    "gulp": "^3.9.1",
+    "gulp-babel": "^6.1.2",
+    "gulp-bump": "^2.1.0",
+    "gulp-concat": "^2.6.0",
+    "gulp-eslint": "^2.0.0",
+    "gulp-ignore": "^2.0.1",
+    "gulp-insert": "^0.5.0",
+    "gulp-rename": "^1.2.2",
+    "gulp-typedoc": "^1.2.1",
+    "gulp-typedoc-extractor": "^0.0.8",
+    "jasmine-core": "^2.4.1",
+    "karma": "^0.13.22",
+    "karma-babel-preprocessor": "^6.0.1",
+    "karma-chrome-launcher": "^0.2.3",
+    "karma-coverage": "^0.5.5",
+    "karma-ie-launcher": "^0.2.0",
+    "karma-jasmine": "^0.3.8",
+    "karma-jspm": "^2.1.0",
+    "object.assign": "^4.0.3",
+    "require-dir": "^0.3.0",
+    "run-sequence": "^1.1.5",
+    "through2": "^2.0.1",
+    "vinyl": "^1.1.1",
+    "vinyl-paths": "^2.1.0",
+    "yargs": "^4.6.0"
+  }
+}
