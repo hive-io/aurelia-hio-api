@@ -1,5 +1,5 @@
 import 'isomorphic-fetch';
-import {HttpClient} from 'aurelia-fetch-client';
+import {HttpClient,json} from 'aurelia-fetch-client';
 import {inject} from 'aurelia-framework';
 
 export function baseUrl() {
@@ -140,6 +140,37 @@ export class MetricsService extends ServiceBase {
   }
 }
 
+class BrokerModel {
+  constructor(data) {
+    Object.assign(this, data);
+  }
+}
+
+export class BrokerService extends CrudService {
+  constructor() {
+    super(BrokerModel, { singular: 'bus', plural: 'bus' });
+  }
+}
+
+class ExchangeModel {
+  constructor(data, http) {
+    Object.assign(this, data);
+    this.http = http;
+  }
+
+  publish(message) {
+    return this.http.fetch('bus/exchange/' + this.name, {
+      method: 'POST', body: json(message)
+    });
+  }
+}
+
+export class ExchangeService extends CrudService {
+  constructor() {
+    super(ExchangeModel, { singular: 'bus/exchange', plural: 'bus/exchange' });
+  }
+}
+
 class GuestModel {
   constructor(data, http) {
     Object.assign(this, data);
@@ -199,6 +230,19 @@ export class HostService extends CrudService {
 
 }
 
+class QueueModel {
+  constructor(data, http) {
+    Object.assign(this, data);
+    this.http = http;
+  }
+}
+
+export class QueueService extends CrudService {
+  constructor() {
+    super(QueueModel, { singular: 'bus/queue', plural: 'bus/queue' });
+  }
+}
+
 class RealmModel {
   constructor(data, http) {
     Object.assign(this, data);
@@ -212,4 +256,14 @@ export class RealmService extends CrudService {
 }
 
 export function configure(aurelia) {}
-export { ServiceBase, CrudService, GuestService, HostService, MetricsService, RealmService };
+export {
+  ServiceBase,
+  CrudService,
+  GuestService,
+  HostService,
+  MetricsService,
+  RealmService,
+  BrokerService,
+  ExchangeService,
+  QueueService
+};

@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.RealmService = exports.HostService = exports.GuestService = exports.MetricsService = exports.CrudService = exports.ServiceBase = undefined;
+exports.RealmService = exports.QueueService = exports.HostService = exports.GuestService = exports.ExchangeService = exports.BrokerService = exports.MetricsService = exports.CrudService = exports.ServiceBase = undefined;
 
 var _dec, _class;
 
@@ -205,8 +205,55 @@ var MetricsService = exports.MetricsService = (_dec = (0, _aureliaFramework.inje
   return MetricsService;
 }(ServiceBase)) || _class);
 
+var BrokerModel = function BrokerModel(data) {
+  _classCallCheck(this, BrokerModel);
+
+  Object.assign(this, data);
+};
+
+var BrokerService = exports.BrokerService = function (_CrudService) {
+  _inherits(BrokerService, _CrudService);
+
+  function BrokerService() {
+    _classCallCheck(this, BrokerService);
+
+    return _possibleConstructorReturn(this, _CrudService.call(this, BrokerModel, { singular: 'bus', plural: 'bus' }));
+  }
+
+  return BrokerService;
+}(CrudService);
+
+var ExchangeModel = function () {
+  function ExchangeModel(data, http) {
+    _classCallCheck(this, ExchangeModel);
+
+    Object.assign(this, data);
+    this.http = http;
+  }
+
+  ExchangeModel.prototype.publish = function publish(message) {
+    return this.http.fetch('bus/exchange/' + this.name, {
+      method: 'POST', body: (0, _aureliaFetchClient.json)(message)
+    });
+  };
+
+  return ExchangeModel;
+}();
+
+var ExchangeService = exports.ExchangeService = function (_CrudService2) {
+  _inherits(ExchangeService, _CrudService2);
+
+  function ExchangeService() {
+    _classCallCheck(this, ExchangeService);
+
+    return _possibleConstructorReturn(this, _CrudService2.call(this, ExchangeModel, { singular: 'bus/exchange', plural: 'bus/exchange' }));
+  }
+
+  return ExchangeService;
+}(CrudService);
+
 var GuestModel = function GuestModel(data, http) {
-  var _this6 = this;
+  var _this8 = this;
 
   _classCallCheck(this, GuestModel);
 
@@ -216,8 +263,8 @@ var GuestModel = function GuestModel(data, http) {
   }
 
   ['reset', 'suspend', 'resume', 'poweroff', 'poweron', 'undefine', 'reboot', 'shutdown'].map(function (action) {
-    var self = _this6;
-    _this6[action] = function () {
+    var self = _this8;
+    _this8[action] = function () {
       console.log('called: ', action);
       console.log('   => ', 'guest/' + self.name + '/' + action);
       return http.fetch('guest/' + self.name + '/' + action, { method: 'POST' });
@@ -225,13 +272,13 @@ var GuestModel = function GuestModel(data, http) {
   });
 };
 
-var GuestService = exports.GuestService = function (_CrudService) {
-  _inherits(GuestService, _CrudService);
+var GuestService = exports.GuestService = function (_CrudService3) {
+  _inherits(GuestService, _CrudService3);
 
   function GuestService() {
     _classCallCheck(this, GuestService);
 
-    return _possibleConstructorReturn(this, _CrudService.call(this, GuestModel, { singular: 'guest', plural: 'guests' }));
+    return _possibleConstructorReturn(this, _CrudService3.call(this, GuestModel, { singular: 'guest', plural: 'guests' }));
   }
 
   return GuestService;
@@ -247,13 +294,13 @@ var HostModel = function HostModel(data, http) {
   this.hardware.bios.vendor = this.hardware.bios.vendor || 'Not Specified';
 };
 
-var HostService = exports.HostService = function (_CrudService2) {
-  _inherits(HostService, _CrudService2);
+var HostService = exports.HostService = function (_CrudService4) {
+  _inherits(HostService, _CrudService4);
 
   function HostService() {
     _classCallCheck(this, HostService);
 
-    return _possibleConstructorReturn(this, _CrudService2.call(this, HostModel, { singular: 'host', plural: 'hosts' }));
+    return _possibleConstructorReturn(this, _CrudService4.call(this, HostModel, { singular: 'host', plural: 'hosts' }));
   }
 
   HostService.prototype.statistics = function statistics() {
@@ -271,19 +318,38 @@ var HostService = exports.HostService = function (_CrudService2) {
   return HostService;
 }(CrudService);
 
+var QueueModel = function QueueModel(data, http) {
+  _classCallCheck(this, QueueModel);
+
+  Object.assign(this, data);
+  this.http = http;
+};
+
+var QueueService = exports.QueueService = function (_CrudService5) {
+  _inherits(QueueService, _CrudService5);
+
+  function QueueService() {
+    _classCallCheck(this, QueueService);
+
+    return _possibleConstructorReturn(this, _CrudService5.call(this, QueueModel, { singular: 'bus/queue', plural: 'bus/queue' }));
+  }
+
+  return QueueService;
+}(CrudService);
+
 var RealmModel = function RealmModel(data, http) {
   _classCallCheck(this, RealmModel);
 
   Object.assign(this, data);
 };
 
-var RealmService = exports.RealmService = function (_CrudService3) {
-  _inherits(RealmService, _CrudService3);
+var RealmService = exports.RealmService = function (_CrudService6) {
+  _inherits(RealmService, _CrudService6);
 
   function RealmService() {
     _classCallCheck(this, RealmService);
 
-    return _possibleConstructorReturn(this, _CrudService3.call(this, RealmModel, { singular: 'realm', plural: 'realms' }));
+    return _possibleConstructorReturn(this, _CrudService6.call(this, RealmModel, { singular: 'realm', plural: 'realms' }));
   }
 
   return RealmService;
@@ -296,3 +362,6 @@ exports.GuestService = GuestService;
 exports.HostService = HostService;
 exports.MetricsService = MetricsService;
 exports.RealmService = RealmService;
+exports.BrokerService = BrokerService;
+exports.ExchangeService = ExchangeService;
+exports.QueueService = QueueService;

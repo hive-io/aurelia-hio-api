@@ -1,6 +1,6 @@
 {
   "name": "aurelia-hio-api",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "An aurelia plugin providing services for the hiveIO API",
   "homepage": "https://github.com/hive-io/aurelia-hio-api",
   "bugs": {

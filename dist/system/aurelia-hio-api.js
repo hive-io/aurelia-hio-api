@@ -1,7 +1,7 @@
 'use strict';
 
-System.register(['./service-base', './crud-service', './guest-service', './host-service', './metrics-service', './realm-service'], function (_export, _context) {
-  var ServiceBase, CrudService, GuestService, HostService, MetricsService, RealmService;
+System.register(['./service-base', './crud-service', './guest-service', './host-service', './metrics-service', './realm-service', './broker-service', './exchange-service', './queue-service'], function (_export, _context) {
+  var ServiceBase, CrudService, GuestService, HostService, MetricsService, RealmService, BrokerService, ExchangeService, QueueService;
   return {
     setters: [function (_serviceBase) {
       ServiceBase = _serviceBase.ServiceBase;
@@ -15,6 +15,12 @@ System.register(['./service-base', './crud-service', './guest-service', './host-
       MetricsService = _metricsService.MetricsService;
     }, function (_realmService) {
       RealmService = _realmService.RealmService;
+    }, function (_brokerService) {
+      BrokerService = _brokerService.BrokerService;
+    }, function (_exchangeService) {
+      ExchangeService = _exchangeService.ExchangeService;
+    }, function (_queueService) {
+      QueueService = _queueService.QueueService;
     }],
     execute: function () {
       function configure(aurelia) {}
@@ -32,6 +38,12 @@ System.register(['./service-base', './crud-service', './guest-service', './host-
       _export('MetricsService', MetricsService);
 
       _export('RealmService', RealmService);
+
+      _export('BrokerService', BrokerService);
+
+      _export('ExchangeService', ExchangeService);
+
+      _export('QueueService', QueueService);
     }
   };
 });

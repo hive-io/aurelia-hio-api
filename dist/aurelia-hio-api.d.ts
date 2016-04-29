@@ -1,7 +1,8 @@
 declare module 'aurelia-hio-api' {
   import 'isomorphic-fetch';
   import {
-    HttpClient
+    HttpClient,
+    json
   } from 'aurelia-fetch-client';
   import {
     inject
@@ -22,6 +23,12 @@ declare module 'aurelia-hio-api' {
     constructor(memory: any, cpu: any, sensors: any);
     read(fabric: any, start: any): any;
   }
+  export class BrokerService extends CrudService {
+    constructor();
+  }
+  export class ExchangeService extends CrudService {
+    constructor();
+  }
   export class GuestService extends CrudService {
     constructor();
   }
@@ -29,6 +36,9 @@ declare module 'aurelia-hio-api' {
     constructor();
     statistics(): any;
     overview(): any;
+  }
+  export class QueueService extends CrudService {
+    constructor();
   }
   export class RealmService extends CrudService {
     constructor();
@@ -40,6 +50,9 @@ declare module 'aurelia-hio-api' {
     GuestService,
     HostService,
     MetricsService,
-    RealmService
+    RealmService,
+    BrokerService,
+    ExchangeService,
+    QueueService
   };
 }
