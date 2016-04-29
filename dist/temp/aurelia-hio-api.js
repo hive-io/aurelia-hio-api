@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.RealmService = exports.QueueService = exports.HostService = exports.GuestService = exports.ExchangeService = exports.BrokerService = exports.MetricsService = exports.CrudService = exports.ServiceBase = undefined;
+exports.UserService = exports.TemplateService = exports.RealmService = exports.QueueService = exports.HostService = exports.GuestService = exports.ExchangeService = exports.BrokerService = exports.MetricsService = exports.CrudService = exports.ServiceBase = undefined;
 
 var _dec, _class;
 
@@ -355,6 +355,42 @@ var RealmService = exports.RealmService = function (_CrudService6) {
   return RealmService;
 }(CrudService);
 
+var TemplateModel = function TemplateModel(data, http) {
+  _classCallCheck(this, TemplateModel);
+
+  Object.assign(this, data);
+};
+
+var TemplateService = exports.TemplateService = function (_CrudService7) {
+  _inherits(TemplateService, _CrudService7);
+
+  function TemplateService() {
+    _classCallCheck(this, TemplateService);
+
+    return _possibleConstructorReturn(this, _CrudService7.call(this, TemplateModel, { singular: 'template', plural: 'templates' }));
+  }
+
+  return TemplateService;
+}(CrudService);
+
+var UserModel = function UserModel(data, http) {
+  _classCallCheck(this, UserModel);
+
+  Object.assign(this, data);
+};
+
+var UserService = exports.UserService = function (_CrudService8) {
+  _inherits(UserService, _CrudService8);
+
+  function UserService() {
+    _classCallCheck(this, UserService);
+
+    return _possibleConstructorReturn(this, _CrudService8.call(this, UserModel, { singular: 'user', plural: 'users' }));
+  }
+
+  return UserService;
+}(CrudService);
+
 function configure(aurelia) {}
 exports.ServiceBase = ServiceBase;
 exports.CrudService = CrudService;
@@ -362,6 +398,8 @@ exports.GuestService = GuestService;
 exports.HostService = HostService;
 exports.MetricsService = MetricsService;
 exports.RealmService = RealmService;
+exports.TemplateService = TemplateService;
+exports.UserService = UserService;
 exports.BrokerService = BrokerService;
 exports.ExchangeService = ExchangeService;
 exports.QueueService = QueueService;

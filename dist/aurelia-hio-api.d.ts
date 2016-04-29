@@ -43,6 +43,12 @@ declare module 'aurelia-hio-api' {
   export class RealmService extends CrudService {
     constructor();
   }
+  export class TemplateService extends CrudService {
+    constructor();
+  }
+  export class UserService extends CrudService {
+    constructor();
+  }
   export function configure(aurelia: any): any;
   export {
     ServiceBase,
@@ -51,6 +57,8 @@ declare module 'aurelia-hio-api' {
     HostService,
     MetricsService,
     RealmService,
+    TemplateService,
+    UserService,
     BrokerService,
     ExchangeService,
     QueueService

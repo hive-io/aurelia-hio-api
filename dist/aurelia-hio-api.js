@@ -255,6 +255,30 @@ export class RealmService extends CrudService {
   }
 }
 
+class TemplateModel {
+  constructor(data, http) {
+    Object.assign(this, data);
+  }
+}
+
+export class TemplateService extends CrudService {
+  constructor() {
+    super(TemplateModel, { singular: 'template', plural: 'templates' });
+  }
+}
+
+class UserModel {
+  constructor(data, http) {
+    Object.assign(this, data);
+  }
+}
+
+export class UserService extends CrudService {
+  constructor() {
+    super(UserModel, { singular: 'user', plural: 'users' });
+  }
+}
+
 export function configure(aurelia) {}
 export {
   ServiceBase,
@@ -263,6 +287,8 @@ export {
   HostService,
   MetricsService,
   RealmService,
+  TemplateService,
+  UserService,
   BrokerService,
   ExchangeService,
   QueueService
