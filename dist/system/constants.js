@@ -5,7 +5,8 @@ System.register([], function (_export, _context) {
     setters: [],
     execute: function () {
       function baseUrl() {
-        return window.location.hostname === 'localhost' ? 'http://' + location.hostname + ':3000' : 'http://' + location.host;
+        var location = window.location;
+        return location.hostname === 'localhost' ? location.protocol + '//' + location.hostname + ':3000' : location.protocol + '//' + location.host;
       }
 
       _export('baseUrl', baseUrl);

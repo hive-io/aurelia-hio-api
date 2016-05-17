@@ -1,4 +1,4 @@
-define(['exports', './service-base'], function (exports, _serviceBase) {
+define(['exports', './service-base', 'aurelia-fetch-client'], function (exports, _serviceBase, _aureliaFetchClient) {
   'use strict';
 
   Object.defineProperty(exports, "__esModule", {
@@ -58,6 +58,14 @@ define(['exports', './service-base'], function (exports, _serviceBase) {
       return _this;
     }
 
+    CrudService.prototype.create = function create(data) {
+      var url = this.endpoints.plural;
+      return this._fetch(url, {
+        method: 'POST',
+        body: (0, _aureliaFetchClient.json)(data)
+      });
+    };
+
     CrudService.prototype.read = function read(identifier) {
       var url = !!identifier ? this.endpoints.singular + '/' + identifier : this.endpoints.singular;
       return this._fetch(url);
@@ -91,6 +99,19 @@ define(['exports', './service-base'], function (exports, _serviceBase) {
 
       if (query.length) url = url + "?" + query.join('&');
       return this._fetch(url);
+    };
+
+    CrudService.prototype.update = function update(identifier, data) {
+      return this._fetch(this.endpoints.singular, {
+        method: 'PUT',
+        body: (0, _aureliaFetchClient.json)(data)
+      });
+    };
+
+    CrudService.prototype.remove = function remove(identifier) {
+      return this._fetch(this.endpoints.singular, {
+        method: 'DELETE'
+      });
     };
 
     CrudService.prototype._fetch = function _fetch(url, options) {

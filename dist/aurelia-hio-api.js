@@ -3,9 +3,10 @@ import {HttpClient,json} from 'aurelia-fetch-client';
 import {inject} from 'aurelia-framework';
 
 export function baseUrl() {
-  return (window.location.hostname === 'localhost') ?
-    'http://' + location.hostname + ':3000' :   // testing
-    'http://' + location.host;                  // deployed
+  let location = window.location;
+  return (location.hostname === 'localhost') ?
+    `${location.protocol}//${location.hostname}:3000` :   // testing
+    `${location.protocol}//${location.host}`;             // deployed
 }
 
 import * as c from './constants';
@@ -29,6 +30,14 @@ export class CrudService extends ServiceBase {
       singular: options.singular,
       plural: options.plural
     };
+  }
+
+  create(data) {
+    let url = this.endpoints.plural;
+    return this._fetch(url, {
+      method: 'POST',
+      body: json(data)
+    });
   }
 
   read(identifier) {
@@ -66,6 +75,19 @@ export class CrudService extends ServiceBase {
 
     if (query.length) url = url + "?" + query.join('&');
     return this._fetch(url);
+  }
+
+  update(identifier, data) {
+    return this._fetch(this.endpoints.singular, {
+      method: 'PUT',
+      body: json(data)
+    });
+  }
+
+  remove(identifier) {
+    return this._fetch(this.endpoints.singular, {
+      method: 'DELETE'
+    });
   }
 
   // private

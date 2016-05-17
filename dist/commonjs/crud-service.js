@@ -9,6 +9,8 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 var _serviceBase = require('./service-base');
 
+var _aureliaFetchClient = require('aurelia-fetch-client');
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
@@ -30,6 +32,14 @@ var CrudService = exports.CrudService = function (_ServiceBase) {
     };
     return _this;
   }
+
+  CrudService.prototype.create = function create(data) {
+    var url = this.endpoints.plural;
+    return this._fetch(url, {
+      method: 'POST',
+      body: (0, _aureliaFetchClient.json)(data)
+    });
+  };
 
   CrudService.prototype.read = function read(identifier) {
     var url = !!identifier ? this.endpoints.singular + '/' + identifier : this.endpoints.singular;
@@ -64,6 +74,19 @@ var CrudService = exports.CrudService = function (_ServiceBase) {
 
     if (query.length) url = url + "?" + query.join('&');
     return this._fetch(url);
+  };
+
+  CrudService.prototype.update = function update(identifier, data) {
+    return this._fetch(this.endpoints.singular, {
+      method: 'PUT',
+      body: (0, _aureliaFetchClient.json)(data)
+    });
+  };
+
+  CrudService.prototype.remove = function remove(identifier) {
+    return this._fetch(this.endpoints.singular, {
+      method: 'DELETE'
+    });
   };
 
   CrudService.prototype._fetch = function _fetch(url, options) {

@@ -16,8 +16,11 @@ declare module 'aurelia-hio-api' {
   }
   export class CrudService extends ServiceBase {
     constructor(Model: any, options: any);
+    create(data: any): any;
     read(identifier: any): any;
     list(options: any): any;
+    update(identifier: any, data: any): any;
+    remove(identifier: any): any;
   }
   export class MetricsService extends ServiceBase {
     constructor(memory: any, cpu: any, sensors: any);

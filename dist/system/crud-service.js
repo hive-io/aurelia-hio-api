@@ -1,7 +1,7 @@
 'use strict';
 
-System.register(['./service-base'], function (_export, _context) {
-  var ServiceBase, _typeof, CrudService;
+System.register(['./service-base', 'aurelia-fetch-client'], function (_export, _context) {
+  var ServiceBase, json, _typeof, CrudService;
 
   function _classCallCheck(instance, Constructor) {
     if (!(instance instanceof Constructor)) {
@@ -36,6 +36,8 @@ System.register(['./service-base'], function (_export, _context) {
   return {
     setters: [function (_serviceBase) {
       ServiceBase = _serviceBase.ServiceBase;
+    }, function (_aureliaFetchClient) {
+      json = _aureliaFetchClient.json;
     }],
     execute: function () {
       _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
@@ -59,6 +61,14 @@ System.register(['./service-base'], function (_export, _context) {
           };
           return _this;
         }
+
+        CrudService.prototype.create = function create(data) {
+          var url = this.endpoints.plural;
+          return this._fetch(url, {
+            method: 'POST',
+            body: json(data)
+          });
+        };
 
         CrudService.prototype.read = function read(identifier) {
           var url = !!identifier ? this.endpoints.singular + '/' + identifier : this.endpoints.singular;
@@ -93,6 +103,19 @@ System.register(['./service-base'], function (_export, _context) {
 
           if (query.length) url = url + "?" + query.join('&');
           return this._fetch(url);
+        };
+
+        CrudService.prototype.update = function update(identifier, data) {
+          return this._fetch(this.endpoints.singular, {
+            method: 'PUT',
+            body: json(data)
+          });
+        };
+
+        CrudService.prototype.remove = function remove(identifier) {
+          return this._fetch(this.endpoints.singular, {
+            method: 'DELETE'
+          });
         };
 
         CrudService.prototype._fetch = function _fetch(url, options) {

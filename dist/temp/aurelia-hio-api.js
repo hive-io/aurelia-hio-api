@@ -31,7 +31,8 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function baseUrl() {
-  return window.location.hostname === 'localhost' ? 'http://' + location.hostname + ':3000' : 'http://' + location.host;
+  var location = window.location;
+  return location.hostname === 'localhost' ? location.protocol + '//' + location.hostname + ':3000' : location.protocol + '//' + location.host;
 }
 
 var ServiceBase = exports.ServiceBase = function ServiceBase() {
@@ -57,6 +58,14 @@ var CrudService = exports.CrudService = function (_ServiceBase) {
     };
     return _this;
   }
+
+  CrudService.prototype.create = function create(data) {
+    var url = this.endpoints.plural;
+    return this._fetch(url, {
+      method: 'POST',
+      body: (0, _aureliaFetchClient.json)(data)
+    });
+  };
 
   CrudService.prototype.read = function read(identifier) {
     var url = !!identifier ? this.endpoints.singular + '/' + identifier : this.endpoints.singular;
@@ -91,6 +100,19 @@ var CrudService = exports.CrudService = function (_ServiceBase) {
 
     if (query.length) url = url + "?" + query.join('&');
     return this._fetch(url);
+  };
+
+  CrudService.prototype.update = function update(identifier, data) {
+    return this._fetch(this.endpoints.singular, {
+      method: 'PUT',
+      body: (0, _aureliaFetchClient.json)(data)
+    });
+  };
+
+  CrudService.prototype.remove = function remove(identifier) {
+    return this._fetch(this.endpoints.singular, {
+      method: 'DELETE'
+    });
   };
 
   CrudService.prototype._fetch = function _fetch(url, options) {
