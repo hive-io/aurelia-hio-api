@@ -1,18 +1,48 @@
 var path = require('path');
 var fs = require('fs');
 
+// hide warning //
+var emitter = require('events');
+emitter.defaultMaxListeners = 20;
+
 var appRoot = 'src/';
 var pkg = JSON.parse(fs.readFileSync('./package.json', 'utf-8'));
 
-module.exports = {
+var paths = {
   root: appRoot,
   source: appRoot + '**/*.js',
   html: appRoot + '**/*.html',
   style: 'styles/**/*.css',
   output: 'dist/',
-  doc:'./doc',
-  tests: 'test/**/*.js',
+  doc: './doc',
   e2eSpecsSrc: 'test/e2e/src/*.js',
   e2eSpecsDist: 'test/e2e/dist/',
-  packageName: pkg.name
+  exampleSource: 'doc/example/',
+  exampleOutput: 'doc/example-dist/',
+  packageName: pkg.name,
+  ignore: [],
+  useTypeScriptForDTS: false,
+  importsToAdd: [],
+  sort: false
 };
+
+paths.files = [
+  'constants.js',
+  'service-base.js',
+  'crud-service.js',
+  'broker-service.js',
+  'exchange-service.js',
+  'guest-pool-service.js',
+  'guest-service.js',
+  'host-service.js',
+  'metrics-service.js',
+  'queue-service.js',
+  'realm-service.js',
+  'storage-pool-service.js',
+  'template-service.js',
+  'user-service.js'
+].map(function(file) {
+  return paths.root + file;
+});
+
+module.exports = paths;

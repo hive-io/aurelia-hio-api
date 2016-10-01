@@ -31,18 +31,18 @@ export class CrudService extends ServiceBase {
     let query = [];
 
     if (!!options) {
-      if (!!options.order) query.push("sort=" + options.order);
+      if (!!options.order) query.push('sort=' + options.order);
       if (!!options.offset || options.offset !== undefined) {
         if (!Number.isFinite(+options.offset)) throw new Error('invalid offset: ', options.offset);
-        query.push("offset=" + (+options.offset));
+        query.push('offset=' + (+options.offset));
       }
 
       if (!!options.limit) {
         if (!Number.isFinite(+options.offset)) throw new Error('invalid offset: ', options.offset);
-        query.push("count=" + (+options.limit));
+        query.push('count=' + (+options.limit));
       }
 
-      if (!!options.q) query.push("q=" + options.q);
+      if (!!options.q) query.push('q=' + options.q);
 
       Object.keys(options)
         .filter(key => (key !== 'order' && key !== 'offset' && key !== 'limit' && key !== 'q'))
@@ -53,7 +53,7 @@ export class CrudService extends ServiceBase {
         });
     }
 
-    if (query.length) url = url + "?" + query.join('&');
+    if (query.length) url = url + '?' + query.join('&');
     return this._fetch(url);
   }
 
@@ -91,7 +91,9 @@ export class CrudService extends ServiceBase {
             return { headers: response.headers, body: body };
           })
           .catch(err => {
-            console.log(err); return response; });
+            console.error(err);
+            return response;
+          });
       });
   }
 }

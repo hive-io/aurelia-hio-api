@@ -1,21 +1,6 @@
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.UserService = exports.TemplateService = exports.StoragePoolService = exports.RealmService = exports.QueueService = exports.MetricsService = exports.HostService = exports.GuestService = exports.GuestPoolService = exports.ExchangeService = exports.BrokerService = exports.CrudService = exports.ServiceBase = undefined;
-
 var _dec, _class;
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
-exports.baseUrl = baseUrl;
-
-require('isomorphic-fetch');
-
-var _aureliaFetchClient = require('aurelia-fetch-client');
-
-var _aureliaFramework = require('aurelia-framework');
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
@@ -23,20 +8,24 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 
 
-function baseUrl() {
+import 'isomorphic-fetch';
+import { HttpClient, json } from 'aurelia-fetch-client';
+import { inject } from 'aurelia-framework';
+
+export function baseUrl() {
   var location = window.location;
   return location.hostname === 'localhost' ? location.protocol + '//' + location.hostname + ':3000' : location.protocol + '//' + location.host;
 }
 
-var ServiceBase = exports.ServiceBase = function ServiceBase() {
+export var ServiceBase = function ServiceBase() {
   
 
-  this.http = new _aureliaFetchClient.HttpClient().configure(function (config) {
+  this.http = new HttpClient().configure(function (config) {
     config.useStandardConfiguration().withBaseUrl(baseUrl() + '/api/');
   });
 };
 
-var CrudService = exports.CrudService = function (_ServiceBase) {
+export var CrudService = function (_ServiceBase) {
   _inherits(CrudService, _ServiceBase);
 
   function CrudService(Model, options) {
@@ -56,7 +45,7 @@ var CrudService = exports.CrudService = function (_ServiceBase) {
     var url = this.endpoints.plural;
     return this._fetch(url, {
       method: 'POST',
-      body: (0, _aureliaFetchClient.json)(data)
+      body: json(data)
     });
   };
 
@@ -98,7 +87,7 @@ var CrudService = exports.CrudService = function (_ServiceBase) {
   CrudService.prototype.update = function update(identifier, data) {
     return this._fetch(this.endpoints.singular, {
       method: 'PUT',
-      body: (0, _aureliaFetchClient.json)(data)
+      body: json(data)
     });
   };
 
@@ -140,7 +129,7 @@ var BrokerModel = function BrokerModel(data) {
   Object.assign(this, data);
 };
 
-var BrokerService = exports.BrokerService = function (_CrudService) {
+export var BrokerService = function (_CrudService) {
   _inherits(BrokerService, _CrudService);
 
   function BrokerService() {
@@ -162,14 +151,14 @@ var ExchangeModel = function () {
 
   ExchangeModel.prototype.publish = function publish(message) {
     return this.http.fetch('bus/exchange/' + this.name, {
-      method: 'POST', body: (0, _aureliaFetchClient.json)(message)
+      method: 'POST', body: json(message)
     });
   };
 
   return ExchangeModel;
 }();
 
-var ExchangeService = exports.ExchangeService = function (_CrudService2) {
+export var ExchangeService = function (_CrudService2) {
   _inherits(ExchangeService, _CrudService2);
 
   function ExchangeService() {
@@ -187,7 +176,7 @@ var GuestPoolModel = function GuestPoolModel(data, http) {
   Object.assign(this, data);
 };
 
-var GuestPoolService = exports.GuestPoolService = function (_CrudService3) {
+export var GuestPoolService = function (_CrudService3) {
   _inherits(GuestPoolService, _CrudService3);
 
   function GuestPoolService() {
@@ -219,7 +208,7 @@ var GuestModel = function GuestModel(data, http) {
   });
 };
 
-var GuestService = exports.GuestService = function (_CrudService4) {
+export var GuestService = function (_CrudService4) {
   _inherits(GuestService, _CrudService4);
 
   function GuestService() {
@@ -241,7 +230,7 @@ var HostModel = function HostModel(data, http) {
   this.hardware.bios.vendor = this.hardware.bios.vendor || 'Not Specified';
 };
 
-var HostService = exports.HostService = function (_CrudService5) {
+export var HostService = function (_CrudService5) {
   _inherits(HostService, _CrudService5);
 
   function HostService() {
@@ -328,7 +317,7 @@ var SensorsMetricsService = function (_ServiceBase4) {
   return SensorsMetricsService;
 }(ServiceBase);
 
-var MetricsService = exports.MetricsService = (_dec = (0, _aureliaFramework.inject)(MemoryMetricsService, CpuMetricsService, SensorsMetricsService), _dec(_class = function (_ServiceBase5) {
+export var MetricsService = (_dec = inject(MemoryMetricsService, CpuMetricsService, SensorsMetricsService), _dec(_class = function (_ServiceBase5) {
   _inherits(MetricsService, _ServiceBase5);
 
   function MetricsService(memory, cpu, sensors) {
@@ -359,7 +348,7 @@ var QueueModel = function QueueModel(data, http) {
   this.http = http;
 };
 
-var QueueService = exports.QueueService = function (_CrudService6) {
+export var QueueService = function (_CrudService6) {
   _inherits(QueueService, _CrudService6);
 
   function QueueService() {
@@ -377,7 +366,7 @@ var RealmModel = function RealmModel(data, http) {
   Object.assign(this, data);
 };
 
-var RealmService = exports.RealmService = function (_CrudService7) {
+export var RealmService = function (_CrudService7) {
   _inherits(RealmService, _CrudService7);
 
   function RealmService() {
@@ -395,7 +384,7 @@ var StoragePoolModel = function StoragePoolModel(data, http) {
   Object.assign(this, data);
 };
 
-var StoragePoolService = exports.StoragePoolService = function (_CrudService8) {
+export var StoragePoolService = function (_CrudService8) {
   _inherits(StoragePoolService, _CrudService8);
 
   function StoragePoolService() {
@@ -413,7 +402,7 @@ var TemplateModel = function TemplateModel(data, http) {
   Object.assign(this, data);
 };
 
-var TemplateService = exports.TemplateService = function (_CrudService9) {
+export var TemplateService = function (_CrudService9) {
   _inherits(TemplateService, _CrudService9);
 
   function TemplateService() {
@@ -431,7 +420,7 @@ var UserModel = function UserModel(data, http) {
   Object.assign(this, data);
 };
 
-var UserService = exports.UserService = function (_CrudService10) {
+export var UserService = function (_CrudService10) {
   _inherits(UserService, _CrudService10);
 
   function UserService() {

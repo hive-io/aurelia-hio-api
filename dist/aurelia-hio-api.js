@@ -9,14 +9,13 @@ export function baseUrl() {
     `${location.protocol}//${location.host}`;             // deployed
 }
 
-import * as c from './constants';
 export class ServiceBase {
   constructor() {
     this.http = new HttpClient()
       .configure(config => {
         config
           .useStandardConfiguration()
-          .withBaseUrl(c.baseUrl() + '/api/');
+          .withBaseUrl(baseUrl() + '/api/');
       });
   }
 }
@@ -51,18 +50,18 @@ export class CrudService extends ServiceBase {
     let query = [];
 
     if (!!options) {
-      if (!!options.order) query.push("sort=" + options.order);
+      if (!!options.order) query.push('sort=' + options.order);
       if (!!options.offset || options.offset !== undefined) {
         if (!Number.isFinite(+options.offset)) throw new Error('invalid offset: ', options.offset);
-        query.push("offset=" + (+options.offset));
+        query.push('offset=' + (+options.offset));
       }
 
       if (!!options.limit) {
         if (!Number.isFinite(+options.offset)) throw new Error('invalid offset: ', options.offset);
-        query.push("count=" + (+options.limit));
+        query.push('count=' + (+options.limit));
       }
 
-      if (!!options.q) query.push("q=" + options.q);
+      if (!!options.q) query.push('q=' + options.q);
 
       Object.keys(options)
         .filter(key => (key !== 'order' && key !== 'offset' && key !== 'limit' && key !== 'q'))
@@ -73,7 +72,7 @@ export class CrudService extends ServiceBase {
         });
     }
 
-    if (query.length) url = url + "?" + query.join('&');
+    if (query.length) url = url + '?' + query.join('&');
     return this._fetch(url);
   }
 
@@ -111,54 +110,10 @@ export class CrudService extends ServiceBase {
             return { headers: response.headers, body: body };
           })
           .catch(err => {
-            console.log(err); return response; });
+            console.error(err);
+            return response;
+          });
       });
-  }
-}
-
-class MemoryMetricsService extends ServiceBase {
-  read(fabric, start) {
-    start = start || 3600;  // 1hr
-    return self.http.get('metrics/fabric/' + fabric + '/memory?start=' + start)
-      .then(response => response.json());
-  }
-}
-
-class CpuMetricsService extends ServiceBase {
-  read(fabric, start) {
-    start = start || 3600;  // 1hr
-    return self.http.get('metrics/fabric/' + fabric + '/cpu?start=' + start)
-      .then(response => response.json());
-  }
-}
-
-class SensorsMetricsService extends ServiceBase {
-  list(fabric) {
-    return this.http.fetch('metrics/fabric/' + fabric + '/sensors')
-      .then(response => response.json());
-  }
-
-  read(fabric, sensor, start) {
-    start = start || 3600;  // 1hr
-    return this.http.fetch('metrics/fabric/' + fabric + '/sensors?sensor=' + sensor + '&start=' + start)
-      .then(response => response.json());
-  }
-}
-
-@inject(MemoryMetricsService, CpuMetricsService, SensorsMetricsService)
-export class MetricsService extends ServiceBase {
-  constructor(memory, cpu, sensors) {
-    super();
-
-    this.memory = memory;
-    this.cpu = cpu;
-    this.sensors = sensors;
-  }
-
-  read(fabric, start) {
-    start = start || 3600;  // 1hr
-    return this.http.fetch('metrics/fabric/' + fabric + '?start=' + start)
-      .then(response => response.json());
   }
 }
 
@@ -190,6 +145,18 @@ class ExchangeModel {
 export class ExchangeService extends CrudService {
   constructor() {
     super(ExchangeModel, { singular: 'bus/exchange', plural: 'bus/exchange' });
+  }
+}
+
+class GuestPoolModel {
+  constructor(data, http) {
+    Object.assign(this, data);
+  }
+}
+
+export class GuestPoolService extends CrudService {
+  constructor() {
+    super(GuestPoolModel, { singular: 'pool', plural: 'pools' });
   }
 }
 
@@ -252,6 +219,52 @@ export class HostService extends CrudService {
 
 }
 
+class MemoryMetricsService extends ServiceBase {
+  read(fabric, start) {
+    start = start || 3600;  // 1hr
+    return self.http.get('metrics/fabric/' + fabric + '/memory?start=' + start)
+      .then(response => response.json());
+  }
+}
+
+class CpuMetricsService extends ServiceBase {
+  read(fabric, start) {
+    start = start || 3600;  // 1hr
+    return self.http.get('metrics/fabric/' + fabric + '/cpu?start=' + start)
+      .then(response => response.json());
+  }
+}
+
+class SensorsMetricsService extends ServiceBase {
+  list(fabric) {
+    return this.http.fetch('metrics/fabric/' + fabric + '/sensors')
+      .then(response => response.json());
+  }
+
+  read(fabric, sensor, start) {
+    start = start || 3600;  // 1hr
+    return this.http.fetch('metrics/fabric/' + fabric + '/sensors?sensor=' + sensor + '&start=' + start)
+      .then(response => response.json());
+  }
+}
+
+@inject(MemoryMetricsService, CpuMetricsService, SensorsMetricsService)
+export class MetricsService extends ServiceBase {
+  constructor(memory, cpu, sensors) {
+    super();
+
+    this.memory = memory;
+    this.cpu = cpu;
+    this.sensors = sensors;
+  }
+
+  read(fabric, start) {
+    start = start || 3600;  // 1hr
+    return this.http.fetch('metrics/fabric/' + fabric + '?start=' + start)
+      .then(response => response.json());
+  }
+}
+
 class QueueModel {
   constructor(data, http) {
     Object.assign(this, data);
@@ -274,6 +287,18 @@ class RealmModel {
 export class RealmService extends CrudService {
   constructor() {
     super(RealmModel, { singular: 'realm', plural: 'realms' });
+  }
+}
+
+class StoragePoolModel {
+  constructor(data, http) {
+    Object.assign(this, data);
+  }
+}
+
+export class StoragePoolService extends CrudService {
+  constructor() {
+    super(StoragePoolModel, { singular: 'storage/pool', plural: 'storage/pools' });
   }
 }
 
@@ -300,18 +325,3 @@ export class UserService extends CrudService {
     super(UserModel, { singular: 'user', plural: 'users' });
   }
 }
-
-export function configure(aurelia) {}
-export {
-  ServiceBase,
-  CrudService,
-  GuestService,
-  HostService,
-  MetricsService,
-  RealmService,
-  TemplateService,
-  UserService,
-  BrokerService,
-  ExchangeService,
-  QueueService
-};
