@@ -9,7 +9,8 @@ import {UserService} from './user-service';
 import {BrokerService} from './broker-service';
 import {ExchangeService} from './exchange-service';
 import {QueueService} from './queue-service';
-import {PoolService} from './pool-service';
+import {GuestPoolService} from './guest-pool-service';
+import {StoragePoolService} from './storage-pool-service';
 
 export function configure(aurelia) {}
 export {
@@ -24,5 +25,6 @@ export {
   BrokerService,
   ExchangeService,
   QueueService,
-  PoolService
+  GuestPoolService,
+  StoragePoolService
 };
