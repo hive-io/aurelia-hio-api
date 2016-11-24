@@ -5,7 +5,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.UserService = exports.TemplateService = exports.StoragePoolService = exports.RealmService = exports.QueueService = exports.MetricsService = exports.HostService = exports.GuestService = exports.GuestPoolService = exports.ExchangeService = exports.BrokerService = exports.CrudService = exports.ServiceBase = undefined;
 
-var _dec, _class;
+var _dec, _class, _dec2, _class2, _dec3, _class3, _dec4, _class4, _dec5, _class5, _dec6, _class6, _dec7, _class7, _dec8, _class8, _dec9, _class9, _dec10, _class10, _dec11, _class11, _dec12, _class12, _dec13, _class13, _dec14, _class14;
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
@@ -15,7 +15,7 @@ require('isomorphic-fetch');
 
 var _aureliaFetchClient = require('aurelia-fetch-client');
 
-var _aureliaFramework = require('aurelia-framework');
+var _aureliaDependencyInjection = require('aurelia-dependency-injection');
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
@@ -28,21 +28,23 @@ function baseUrl() {
   return location.hostname === 'localhost' ? location.protocol + '//' + location.hostname + ':3000' : location.protocol + '//' + location.host;
 }
 
-var ServiceBase = exports.ServiceBase = function ServiceBase() {
+var ServiceBase = exports.ServiceBase = function ServiceBase(httpClient) {
   
 
-  this.http = new _aureliaFetchClient.HttpClient().configure(function (config) {
-    config.useStandardConfiguration().withBaseUrl(baseUrl() + '/api/');
-  });
+  if (httpClient.baseUrl === '') {
+    httpClient.baseUrl = baseUrl() + '/api/';
+  }
+
+  this.http = httpClient;
 };
 
 var CrudService = exports.CrudService = function (_ServiceBase) {
   _inherits(CrudService, _ServiceBase);
 
-  function CrudService(Model, options) {
+  function CrudService(httpClient, Model, options) {
     
 
-    var _this = _possibleConstructorReturn(this, _ServiceBase.call(this));
+    var _this = _possibleConstructorReturn(this, _ServiceBase.call(this, httpClient));
 
     _this.Model = Model;
     _this.endpoints = {
@@ -140,17 +142,17 @@ var BrokerModel = function BrokerModel(data) {
   Object.assign(this, data);
 };
 
-var BrokerService = exports.BrokerService = function (_CrudService) {
+var BrokerService = exports.BrokerService = (_dec = (0, _aureliaDependencyInjection.inject)(_aureliaFetchClient.HttpClient), _dec(_class = function (_CrudService) {
   _inherits(BrokerService, _CrudService);
 
-  function BrokerService() {
+  function BrokerService(httpClient) {
     
 
-    return _possibleConstructorReturn(this, _CrudService.call(this, BrokerModel, { singular: 'bus', plural: 'bus' }));
+    return _possibleConstructorReturn(this, _CrudService.call(this, httpClient, BrokerModel, { singular: 'bus', plural: 'bus' }));
   }
 
   return BrokerService;
-}(CrudService);
+}(CrudService)) || _class);
 
 var ExchangeModel = function () {
   function ExchangeModel(data, http) {
@@ -169,17 +171,17 @@ var ExchangeModel = function () {
   return ExchangeModel;
 }();
 
-var ExchangeService = exports.ExchangeService = function (_CrudService2) {
+var ExchangeService = exports.ExchangeService = (_dec2 = (0, _aureliaDependencyInjection.inject)(_aureliaFetchClient.HttpClient), _dec2(_class2 = function (_CrudService2) {
   _inherits(ExchangeService, _CrudService2);
 
-  function ExchangeService() {
+  function ExchangeService(httpClient) {
     
 
-    return _possibleConstructorReturn(this, _CrudService2.call(this, ExchangeModel, { singular: 'bus/exchange', plural: 'bus/exchange' }));
+    return _possibleConstructorReturn(this, _CrudService2.call(this, httpClient, ExchangeModel, { singular: 'bus/exchange', plural: 'bus/exchange' }));
   }
 
   return ExchangeService;
-}(CrudService);
+}(CrudService)) || _class2);
 
 var GuestPoolModel = function GuestPoolModel(data, http) {
   
@@ -187,17 +189,17 @@ var GuestPoolModel = function GuestPoolModel(data, http) {
   Object.assign(this, data);
 };
 
-var GuestPoolService = exports.GuestPoolService = function (_CrudService3) {
+var GuestPoolService = exports.GuestPoolService = (_dec3 = (0, _aureliaDependencyInjection.inject)(_aureliaFetchClient.HttpClient), _dec3(_class3 = function (_CrudService3) {
   _inherits(GuestPoolService, _CrudService3);
 
-  function GuestPoolService() {
+  function GuestPoolService(httpClient) {
     
 
-    return _possibleConstructorReturn(this, _CrudService3.call(this, GuestPoolModel, { singular: 'pool', plural: 'pools' }));
+    return _possibleConstructorReturn(this, _CrudService3.call(this, httpClient, GuestPoolModel, { singular: 'pool', plural: 'pools' }));
   }
 
   return GuestPoolService;
-}(CrudService);
+}(CrudService)) || _class3);
 
 var GuestModel = function GuestModel(data, http) {
   var _this5 = this;
@@ -212,24 +214,22 @@ var GuestModel = function GuestModel(data, http) {
   ['reset', 'suspend', 'resume', 'poweroff', 'poweron', 'undefine', 'reboot', 'shutdown'].map(function (action) {
     var self = _this5;
     _this5[action] = function () {
-      console.log('called: ', action);
-      console.log('   => ', 'guest/' + self.name + '/' + action);
       return http.fetch('guest/' + self.name + '/' + action, { method: 'POST' });
     };
   });
 };
 
-var GuestService = exports.GuestService = function (_CrudService4) {
+var GuestService = exports.GuestService = (_dec4 = (0, _aureliaDependencyInjection.inject)(_aureliaFetchClient.HttpClient), _dec4(_class4 = function (_CrudService4) {
   _inherits(GuestService, _CrudService4);
 
-  function GuestService() {
+  function GuestService(httpClient) {
     
 
-    return _possibleConstructorReturn(this, _CrudService4.call(this, GuestModel, { singular: 'guest', plural: 'guests' }));
+    return _possibleConstructorReturn(this, _CrudService4.call(this, httpClient, GuestModel, { singular: 'guest', plural: 'guests' }));
   }
 
   return GuestService;
-}(CrudService);
+}(CrudService)) || _class4);
 
 var HostModel = function HostModel(data, http) {
   
@@ -241,13 +241,13 @@ var HostModel = function HostModel(data, http) {
   this.hardware.bios.vendor = this.hardware.bios.vendor || 'Not Specified';
 };
 
-var HostService = exports.HostService = function (_CrudService5) {
+var HostService = exports.HostService = (_dec5 = (0, _aureliaDependencyInjection.inject)(_aureliaFetchClient.HttpClient), _dec5(_class5 = function (_CrudService5) {
   _inherits(HostService, _CrudService5);
 
-  function HostService() {
+  function HostService(httpClient) {
     
 
-    return _possibleConstructorReturn(this, _CrudService5.call(this, HostModel, { singular: 'host', plural: 'hosts' }));
+    return _possibleConstructorReturn(this, _CrudService5.call(this, httpClient, HostModel, { singular: 'host', plural: 'hosts' }));
   }
 
   HostService.prototype.statistics = function statistics() {
@@ -263,53 +263,50 @@ var HostService = exports.HostService = function (_CrudService5) {
   };
 
   return HostService;
-}(CrudService);
-
-var MemoryMetricsService = function (_ServiceBase2) {
+}(CrudService)) || _class5);
+var MemoryMetricsService = (_dec6 = (0, _aureliaDependencyInjection.inject)(_aureliaFetchClient.HttpClient), _dec6(_class6 = function (_ServiceBase2) {
   _inherits(MemoryMetricsService, _ServiceBase2);
 
-  function MemoryMetricsService() {
+  function MemoryMetricsService(httpClient) {
     
 
-    return _possibleConstructorReturn(this, _ServiceBase2.apply(this, arguments));
+    return _possibleConstructorReturn(this, _ServiceBase2.call(this, httpClient));
   }
 
   MemoryMetricsService.prototype.read = function read(fabric, start) {
     start = start || 3600;
-    return self.http.get('metrics/fabric/' + fabric + '/memory?start=' + start).then(function (response) {
+    return this.http.get('metrics/fabric/' + fabric + '/memory?start=' + start).then(function (response) {
       return response.json();
     });
   };
 
   return MemoryMetricsService;
-}(ServiceBase);
-
-var CpuMetricsService = function (_ServiceBase3) {
+}(ServiceBase)) || _class6);
+var CpuMetricsService = (_dec7 = (0, _aureliaDependencyInjection.inject)(_aureliaFetchClient.HttpClient), _dec7(_class7 = function (_ServiceBase3) {
   _inherits(CpuMetricsService, _ServiceBase3);
 
-  function CpuMetricsService() {
+  function CpuMetricsService(httpClient) {
     
 
-    return _possibleConstructorReturn(this, _ServiceBase3.apply(this, arguments));
+    return _possibleConstructorReturn(this, _ServiceBase3.call(this, httpClient));
   }
 
   CpuMetricsService.prototype.read = function read(fabric, start) {
     start = start || 3600;
-    return self.http.get('metrics/fabric/' + fabric + '/cpu?start=' + start).then(function (response) {
+    return this.http.get('metrics/fabric/' + fabric + '/cpu?start=' + start).then(function (response) {
       return response.json();
     });
   };
 
   return CpuMetricsService;
-}(ServiceBase);
-
-var SensorsMetricsService = function (_ServiceBase4) {
+}(ServiceBase)) || _class7);
+var SensorsMetricsService = (_dec8 = (0, _aureliaDependencyInjection.inject)(_aureliaFetchClient.HttpClient), _dec8(_class8 = function (_ServiceBase4) {
   _inherits(SensorsMetricsService, _ServiceBase4);
 
-  function SensorsMetricsService() {
+  function SensorsMetricsService(httpClient) {
     
 
-    return _possibleConstructorReturn(this, _ServiceBase4.apply(this, arguments));
+    return _possibleConstructorReturn(this, _ServiceBase4.call(this, httpClient));
   }
 
   SensorsMetricsService.prototype.list = function list(fabric) {
@@ -326,15 +323,14 @@ var SensorsMetricsService = function (_ServiceBase4) {
   };
 
   return SensorsMetricsService;
-}(ServiceBase);
-
-var MetricsService = exports.MetricsService = (_dec = (0, _aureliaFramework.inject)(MemoryMetricsService, CpuMetricsService, SensorsMetricsService), _dec(_class = function (_ServiceBase5) {
+}(ServiceBase)) || _class8);
+var MetricsService = exports.MetricsService = (_dec9 = (0, _aureliaDependencyInjection.inject)(_aureliaFetchClient.HttpClient, MemoryMetricsService, CpuMetricsService, SensorsMetricsService), _dec9(_class9 = function (_ServiceBase5) {
   _inherits(MetricsService, _ServiceBase5);
 
-  function MetricsService(memory, cpu, sensors) {
+  function MetricsService(httpClient, memory, cpu, sensors) {
     
 
-    var _this11 = _possibleConstructorReturn(this, _ServiceBase5.call(this));
+    var _this11 = _possibleConstructorReturn(this, _ServiceBase5.call(this, httpClient));
 
     _this11.memory = memory;
     _this11.cpu = cpu;
@@ -350,7 +346,7 @@ var MetricsService = exports.MetricsService = (_dec = (0, _aureliaFramework.inje
   };
 
   return MetricsService;
-}(ServiceBase)) || _class);
+}(ServiceBase)) || _class9);
 
 var QueueModel = function QueueModel(data, http) {
   
@@ -359,17 +355,17 @@ var QueueModel = function QueueModel(data, http) {
   this.http = http;
 };
 
-var QueueService = exports.QueueService = function (_CrudService6) {
+var QueueService = exports.QueueService = (_dec10 = (0, _aureliaDependencyInjection.inject)(_aureliaFetchClient.HttpClient), _dec10(_class10 = function (_CrudService6) {
   _inherits(QueueService, _CrudService6);
 
-  function QueueService() {
+  function QueueService(httpClient) {
     
 
-    return _possibleConstructorReturn(this, _CrudService6.call(this, QueueModel, { singular: 'bus/queue', plural: 'bus/queue' }));
+    return _possibleConstructorReturn(this, _CrudService6.call(this, httpClient, QueueModel, { singular: 'bus/queue', plural: 'bus/queue' }));
   }
 
   return QueueService;
-}(CrudService);
+}(CrudService)) || _class10);
 
 var RealmModel = function RealmModel(data, http) {
   
@@ -377,17 +373,17 @@ var RealmModel = function RealmModel(data, http) {
   Object.assign(this, data);
 };
 
-var RealmService = exports.RealmService = function (_CrudService7) {
+var RealmService = exports.RealmService = (_dec11 = (0, _aureliaDependencyInjection.inject)(_aureliaFetchClient.HttpClient), _dec11(_class11 = function (_CrudService7) {
   _inherits(RealmService, _CrudService7);
 
-  function RealmService() {
+  function RealmService(httpClient) {
     
 
-    return _possibleConstructorReturn(this, _CrudService7.call(this, RealmModel, { singular: 'realm', plural: 'realms' }));
+    return _possibleConstructorReturn(this, _CrudService7.call(this, httpClient, RealmModel, { singular: 'realm', plural: 'realms' }));
   }
 
   return RealmService;
-}(CrudService);
+}(CrudService)) || _class11);
 
 var StoragePoolModel = function StoragePoolModel(data, http) {
   
@@ -395,17 +391,17 @@ var StoragePoolModel = function StoragePoolModel(data, http) {
   Object.assign(this, data);
 };
 
-var StoragePoolService = exports.StoragePoolService = function (_CrudService8) {
+var StoragePoolService = exports.StoragePoolService = (_dec12 = (0, _aureliaDependencyInjection.inject)(_aureliaFetchClient.HttpClient), _dec12(_class12 = function (_CrudService8) {
   _inherits(StoragePoolService, _CrudService8);
 
-  function StoragePoolService() {
+  function StoragePoolService(httpClient) {
     
 
-    return _possibleConstructorReturn(this, _CrudService8.call(this, StoragePoolModel, { singular: 'storage/pool', plural: 'storage/pools' }));
+    return _possibleConstructorReturn(this, _CrudService8.call(this, httpClient, StoragePoolModel, { singular: 'storage/pool', plural: 'storage/pools' }));
   }
 
   return StoragePoolService;
-}(CrudService);
+}(CrudService)) || _class12);
 
 var TemplateModel = function TemplateModel(data, http) {
   
@@ -413,17 +409,17 @@ var TemplateModel = function TemplateModel(data, http) {
   Object.assign(this, data);
 };
 
-var TemplateService = exports.TemplateService = function (_CrudService9) {
+var TemplateService = exports.TemplateService = (_dec13 = (0, _aureliaDependencyInjection.inject)(_aureliaFetchClient.HttpClient), _dec13(_class13 = function (_CrudService9) {
   _inherits(TemplateService, _CrudService9);
 
-  function TemplateService() {
+  function TemplateService(httpClient) {
     
 
-    return _possibleConstructorReturn(this, _CrudService9.call(this, TemplateModel, { singular: 'template', plural: 'templates' }));
+    return _possibleConstructorReturn(this, _CrudService9.call(this, httpClient, TemplateModel, { singular: 'template', plural: 'templates' }));
   }
 
   return TemplateService;
-}(CrudService);
+}(CrudService)) || _class13);
 
 var UserModel = function UserModel(data, http) {
   
@@ -431,14 +427,14 @@ var UserModel = function UserModel(data, http) {
   Object.assign(this, data);
 };
 
-var UserService = exports.UserService = function (_CrudService10) {
+var UserService = exports.UserService = (_dec14 = (0, _aureliaDependencyInjection.inject)(_aureliaFetchClient.HttpClient), _dec14(_class14 = function (_CrudService10) {
   _inherits(UserService, _CrudService10);
 
-  function UserService() {
+  function UserService(httpClient) {
     
 
-    return _possibleConstructorReturn(this, _CrudService10.call(this, UserModel, { singular: 'user', plural: 'users' }));
+    return _possibleConstructorReturn(this, _CrudService10.call(this, httpClient, UserModel, { singular: 'user', plural: 'users' }));
   }
 
   return UserService;
-}(CrudService);
+}(CrudService)) || _class14);

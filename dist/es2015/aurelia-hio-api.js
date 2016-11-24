@@ -1,8 +1,8 @@
-var _dec, _class;
+var _dec, _class, _dec2, _class2, _dec3, _class3, _dec4, _class4, _dec5, _class5, _dec6, _class6, _dec7, _class7, _dec8, _class8, _dec9, _class9, _dec10, _class10, _dec11, _class11, _dec12, _class12, _dec13, _class13, _dec14, _class14;
 
 import 'isomorphic-fetch';
-import { HttpClient, json } from 'aurelia-fetch-client';
-import { inject } from 'aurelia-framework';
+import { json, HttpClient } from 'aurelia-fetch-client';
+import { inject } from 'aurelia-dependency-injection';
 
 export function baseUrl() {
   let location = window.location;
@@ -10,16 +10,18 @@ export function baseUrl() {
 }
 
 export let ServiceBase = class ServiceBase {
-  constructor() {
-    this.http = new HttpClient().configure(config => {
-      config.useStandardConfiguration().withBaseUrl(baseUrl() + '/api/');
-    });
+  constructor(httpClient) {
+    if (httpClient.baseUrl === '') {
+      httpClient.baseUrl = baseUrl() + '/api/';
+    }
+
+    this.http = httpClient;
   }
 };
 
 export let CrudService = class CrudService extends ServiceBase {
-  constructor(Model, options) {
-    super();
+  constructor(httpClient, Model, options) {
+    super(httpClient);
 
     this.Model = Model;
     this.endpoints = {
@@ -110,12 +112,11 @@ let BrokerModel = class BrokerModel {
   }
 };
 
-
-export let BrokerService = class BrokerService extends CrudService {
-  constructor() {
-    super(BrokerModel, { singular: 'bus', plural: 'bus' });
+export let BrokerService = (_dec = inject(HttpClient), _dec(_class = class BrokerService extends CrudService {
+  constructor(httpClient) {
+    super(httpClient, BrokerModel, { singular: 'bus', plural: 'bus' });
   }
-};
+}) || _class);
 
 let ExchangeModel = class ExchangeModel {
   constructor(data, http) {
@@ -130,12 +131,11 @@ let ExchangeModel = class ExchangeModel {
   }
 };
 
-
-export let ExchangeService = class ExchangeService extends CrudService {
-  constructor() {
-    super(ExchangeModel, { singular: 'bus/exchange', plural: 'bus/exchange' });
+export let ExchangeService = (_dec2 = inject(HttpClient), _dec2(_class2 = class ExchangeService extends CrudService {
+  constructor(httpClient) {
+    super(httpClient, ExchangeModel, { singular: 'bus/exchange', plural: 'bus/exchange' });
   }
-};
+}) || _class2);
 
 let GuestPoolModel = class GuestPoolModel {
   constructor(data, http) {
@@ -143,12 +143,11 @@ let GuestPoolModel = class GuestPoolModel {
   }
 };
 
-
-export let GuestPoolService = class GuestPoolService extends CrudService {
-  constructor() {
-    super(GuestPoolModel, { singular: 'pool', plural: 'pools' });
+export let GuestPoolService = (_dec3 = inject(HttpClient), _dec3(_class3 = class GuestPoolService extends CrudService {
+  constructor(httpClient) {
+    super(httpClient, GuestPoolModel, { singular: 'pool', plural: 'pools' });
   }
-};
+}) || _class3);
 
 let GuestModel = class GuestModel {
   constructor(data, http) {
@@ -160,8 +159,6 @@ let GuestModel = class GuestModel {
     ['reset', 'suspend', 'resume', 'poweroff', 'poweron', 'undefine', 'reboot', 'shutdown'].map(action => {
       let self = this;
       this[action] = function () {
-        console.log('called: ', action);
-        console.log('   => ', 'guest/' + self.name + '/' + action);
         return http.fetch('guest/' + self.name + '/' + action, { method: 'POST' });
       };
     });
@@ -169,12 +166,11 @@ let GuestModel = class GuestModel {
 
 };
 
-
-export let GuestService = class GuestService extends CrudService {
-  constructor() {
-    super(GuestModel, { singular: 'guest', plural: 'guests' });
+export let GuestService = (_dec4 = inject(HttpClient), _dec4(_class4 = class GuestService extends CrudService {
+  constructor(httpClient) {
+    super(httpClient, GuestModel, { singular: 'guest', plural: 'guests' });
   }
-};
+}) || _class4);
 
 let HostModel = class HostModel {
   constructor(data, http) {
@@ -186,10 +182,9 @@ let HostModel = class HostModel {
   }
 };
 
-
-export let HostService = class HostService extends CrudService {
-  constructor() {
-    super(HostModel, { singular: 'host', plural: 'hosts' });
+export let HostService = (_dec5 = inject(HttpClient), _dec5(_class5 = class HostService extends CrudService {
+  constructor(httpClient) {
+    super(httpClient, HostModel, { singular: 'host', plural: 'hosts' });
   }
 
   statistics() {
@@ -200,21 +195,30 @@ export let HostService = class HostService extends CrudService {
     return this._fetch('host/overview', { raw: true }).then(response => response.json());
   }
 
-};
+}) || _class5);
 
-let MemoryMetricsService = class MemoryMetricsService extends ServiceBase {
+let MemoryMetricsService = (_dec6 = inject(HttpClient), _dec6(_class6 = class MemoryMetricsService extends ServiceBase {
+  constructor(httpClient) {
+    super(httpClient);
+  }
   read(fabric, start) {
     start = start || 3600;
-    return self.http.get('metrics/fabric/' + fabric + '/memory?start=' + start).then(response => response.json());
+    return this.http.get('metrics/fabric/' + fabric + '/memory?start=' + start).then(response => response.json());
   }
-};
-let CpuMetricsService = class CpuMetricsService extends ServiceBase {
+}) || _class6);
+let CpuMetricsService = (_dec7 = inject(HttpClient), _dec7(_class7 = class CpuMetricsService extends ServiceBase {
+  constructor(httpClient) {
+    super(httpClient);
+  }
   read(fabric, start) {
     start = start || 3600;
-    return self.http.get('metrics/fabric/' + fabric + '/cpu?start=' + start).then(response => response.json());
+    return this.http.get('metrics/fabric/' + fabric + '/cpu?start=' + start).then(response => response.json());
   }
-};
-let SensorsMetricsService = class SensorsMetricsService extends ServiceBase {
+}) || _class7);
+let SensorsMetricsService = (_dec8 = inject(HttpClient), _dec8(_class8 = class SensorsMetricsService extends ServiceBase {
+  constructor(httpClient) {
+    super(httpClient);
+  }
   list(fabric) {
     return this.http.fetch('metrics/fabric/' + fabric + '/sensors').then(response => response.json());
   }
@@ -223,11 +227,11 @@ let SensorsMetricsService = class SensorsMetricsService extends ServiceBase {
     start = start || 3600;
     return this.http.fetch('metrics/fabric/' + fabric + '/sensors?sensor=' + sensor + '&start=' + start).then(response => response.json());
   }
-};
+}) || _class8);
 
-export let MetricsService = (_dec = inject(MemoryMetricsService, CpuMetricsService, SensorsMetricsService), _dec(_class = class MetricsService extends ServiceBase {
-  constructor(memory, cpu, sensors) {
-    super();
+export let MetricsService = (_dec9 = inject(HttpClient, MemoryMetricsService, CpuMetricsService, SensorsMetricsService), _dec9(_class9 = class MetricsService extends ServiceBase {
+  constructor(httpClient, memory, cpu, sensors) {
+    super(httpClient);
 
     this.memory = memory;
     this.cpu = cpu;
@@ -238,7 +242,7 @@ export let MetricsService = (_dec = inject(MemoryMetricsService, CpuMetricsServi
     start = start || 3600;
     return this.http.fetch('metrics/fabric/' + fabric + '?start=' + start).then(response => response.json());
   }
-}) || _class);
+}) || _class9);
 
 let QueueModel = class QueueModel {
   constructor(data, http) {
@@ -247,12 +251,11 @@ let QueueModel = class QueueModel {
   }
 };
 
-
-export let QueueService = class QueueService extends CrudService {
-  constructor() {
-    super(QueueModel, { singular: 'bus/queue', plural: 'bus/queue' });
+export let QueueService = (_dec10 = inject(HttpClient), _dec10(_class10 = class QueueService extends CrudService {
+  constructor(httpClient) {
+    super(httpClient, QueueModel, { singular: 'bus/queue', plural: 'bus/queue' });
   }
-};
+}) || _class10);
 
 let RealmModel = class RealmModel {
   constructor(data, http) {
@@ -260,12 +263,11 @@ let RealmModel = class RealmModel {
   }
 };
 
-
-export let RealmService = class RealmService extends CrudService {
-  constructor() {
-    super(RealmModel, { singular: 'realm', plural: 'realms' });
+export let RealmService = (_dec11 = inject(HttpClient), _dec11(_class11 = class RealmService extends CrudService {
+  constructor(httpClient) {
+    super(httpClient, RealmModel, { singular: 'realm', plural: 'realms' });
   }
-};
+}) || _class11);
 
 let StoragePoolModel = class StoragePoolModel {
   constructor(data, http) {
@@ -273,12 +275,11 @@ let StoragePoolModel = class StoragePoolModel {
   }
 };
 
-
-export let StoragePoolService = class StoragePoolService extends CrudService {
-  constructor() {
-    super(StoragePoolModel, { singular: 'storage/pool', plural: 'storage/pools' });
+export let StoragePoolService = (_dec12 = inject(HttpClient), _dec12(_class12 = class StoragePoolService extends CrudService {
+  constructor(httpClient) {
+    super(httpClient, StoragePoolModel, { singular: 'storage/pool', plural: 'storage/pools' });
   }
-};
+}) || _class12);
 
 let TemplateModel = class TemplateModel {
   constructor(data, http) {
@@ -286,12 +287,11 @@ let TemplateModel = class TemplateModel {
   }
 };
 
-
-export let TemplateService = class TemplateService extends CrudService {
-  constructor() {
-    super(TemplateModel, { singular: 'template', plural: 'templates' });
+export let TemplateService = (_dec13 = inject(HttpClient), _dec13(_class13 = class TemplateService extends CrudService {
+  constructor(httpClient) {
+    super(httpClient, TemplateModel, { singular: 'template', plural: 'templates' });
   }
-};
+}) || _class13);
 
 let UserModel = class UserModel {
   constructor(data, http) {
@@ -299,9 +299,8 @@ let UserModel = class UserModel {
   }
 };
 
-
-export let UserService = class UserService extends CrudService {
-  constructor() {
-    super(UserModel, { singular: 'user', plural: 'users' });
+export let UserService = (_dec14 = inject(HttpClient), _dec14(_class14 = class UserService extends CrudService {
+  constructor(httpClient) {
+    super(httpClient, UserModel, { singular: 'user', plural: 'users' });
   }
-};
+}) || _class14);

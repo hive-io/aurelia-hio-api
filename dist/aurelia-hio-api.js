@@ -1,6 +1,6 @@
 import 'isomorphic-fetch';
-import {HttpClient,json} from 'aurelia-fetch-client';
-import {inject} from 'aurelia-framework';
+import {json,HttpClient} from 'aurelia-fetch-client';
+import {inject} from 'aurelia-dependency-injection';
 
 export function baseUrl() {
   let location = window.location;
@@ -10,19 +10,18 @@ export function baseUrl() {
 }
 
 export class ServiceBase {
-  constructor() {
-    this.http = new HttpClient()
-      .configure(config => {
-        config
-          .useStandardConfiguration()
-          .withBaseUrl(baseUrl() + '/api/');
-      });
+  constructor(httpClient) {
+    if (httpClient.baseUrl === '') {
+      httpClient.baseUrl = baseUrl() + '/api/';
+    }
+
+    this.http = httpClient;
   }
 }
 
 export class CrudService extends ServiceBase {
-  constructor(Model, options) {
-    super();
+  constructor(httpClient, Model, options) {
+    super(httpClient);
 
     this.Model = Model;
     this.endpoints = {
@@ -123,9 +122,10 @@ class BrokerModel {
   }
 }
 
+@inject(HttpClient)
 export class BrokerService extends CrudService {
-  constructor() {
-    super(BrokerModel, { singular: 'bus', plural: 'bus' });
+  constructor(httpClient) {
+    super(httpClient, BrokerModel, { singular: 'bus', plural: 'bus' });
   }
 }
 
@@ -142,9 +142,10 @@ class ExchangeModel {
   }
 }
 
+@inject(HttpClient)
 export class ExchangeService extends CrudService {
-  constructor() {
-    super(ExchangeModel, { singular: 'bus/exchange', plural: 'bus/exchange' });
+  constructor(httpClient) {
+    super(httpClient, ExchangeModel, { singular: 'bus/exchange', plural: 'bus/exchange' });
   }
 }
 
@@ -154,9 +155,10 @@ class GuestPoolModel {
   }
 }
 
+@inject(HttpClient)
 export class GuestPoolService extends CrudService {
-  constructor() {
-    super(GuestPoolModel, { singular: 'pool', plural: 'pools' });
+  constructor(httpClient) {
+    super(httpClient, GuestPoolModel, { singular: 'pool', plural: 'pools' });
   }
 }
 
@@ -173,8 +175,6 @@ class GuestModel {
     ].map(action => {
       let self = this;
       this[action] = function() {
-        console.log('called: ', action);
-        console.log('   => ', 'guest/' + self.name + '/' + action);
         return http.fetch('guest/' + self.name + '/' + action, { method: 'POST' });
       };
     });
@@ -182,9 +182,10 @@ class GuestModel {
 
 }
 
+@inject(HttpClient)
 export class GuestService extends CrudService {
-  constructor() {
-    super(GuestModel, { singular: 'guest', plural: 'guests' });
+  constructor(httpClient) {
+    super(httpClient, GuestModel, { singular: 'guest', plural: 'guests' });
   }
 }
 
@@ -199,9 +200,10 @@ class HostModel {
   }
 }
 
+@inject(HttpClient)
 export class HostService extends CrudService {
-  constructor() {
-    super(HostModel, { singular: 'host', plural: 'hosts' });
+  constructor(httpClient) {
+    super(httpClient, HostModel, { singular: 'host', plural: 'hosts' });
   }
 
   statistics() {
@@ -219,23 +221,29 @@ export class HostService extends CrudService {
 
 }
 
+@inject(HttpClient)
 class MemoryMetricsService extends ServiceBase {
+  constructor(httpClient) { super(httpClient); }
   read(fabric, start) {
     start = start || 3600;  // 1hr
-    return self.http.get('metrics/fabric/' + fabric + '/memory?start=' + start)
+    return this.http.get('metrics/fabric/' + fabric + '/memory?start=' + start)
       .then(response => response.json());
   }
 }
 
+@inject(HttpClient)
 class CpuMetricsService extends ServiceBase {
+  constructor(httpClient) { super(httpClient); }
   read(fabric, start) {
     start = start || 3600;  // 1hr
-    return self.http.get('metrics/fabric/' + fabric + '/cpu?start=' + start)
+    return this.http.get('metrics/fabric/' + fabric + '/cpu?start=' + start)
       .then(response => response.json());
   }
 }
 
+@inject(HttpClient)
 class SensorsMetricsService extends ServiceBase {
+  constructor(httpClient) { super(httpClient); }
   list(fabric) {
     return this.http.fetch('metrics/fabric/' + fabric + '/sensors')
       .then(response => response.json());
@@ -248,10 +256,10 @@ class SensorsMetricsService extends ServiceBase {
   }
 }
 
-@inject(MemoryMetricsService, CpuMetricsService, SensorsMetricsService)
+@inject(HttpClient, MemoryMetricsService, CpuMetricsService, SensorsMetricsService)
 export class MetricsService extends ServiceBase {
-  constructor(memory, cpu, sensors) {
-    super();
+  constructor(httpClient, memory, cpu, sensors) {
+    super(httpClient);
 
     this.memory = memory;
     this.cpu = cpu;
@@ -272,9 +280,10 @@ class QueueModel {
   }
 }
 
+@inject(HttpClient)
 export class QueueService extends CrudService {
-  constructor() {
-    super(QueueModel, { singular: 'bus/queue', plural: 'bus/queue' });
+  constructor(httpClient) {
+    super(httpClient, QueueModel, { singular: 'bus/queue', plural: 'bus/queue' });
   }
 }
 
@@ -284,9 +293,10 @@ class RealmModel {
   }
 }
 
+@inject(HttpClient)
 export class RealmService extends CrudService {
-  constructor() {
-    super(RealmModel, { singular: 'realm', plural: 'realms' });
+  constructor(httpClient) {
+    super(httpClient, RealmModel, { singular: 'realm', plural: 'realms' });
   }
 }
 
@@ -296,9 +306,10 @@ class StoragePoolModel {
   }
 }
 
+@inject(HttpClient)
 export class StoragePoolService extends CrudService {
-  constructor() {
-    super(StoragePoolModel, { singular: 'storage/pool', plural: 'storage/pools' });
+  constructor(httpClient) {
+    super(httpClient, StoragePoolModel, { singular: 'storage/pool', plural: 'storage/pools' });
   }
 }
 
@@ -308,9 +319,10 @@ class TemplateModel {
   }
 }
 
+@inject(HttpClient)
 export class TemplateService extends CrudService {
-  constructor() {
-    super(TemplateModel, { singular: 'template', plural: 'templates' });
+  constructor(httpClient) {
+    super(httpClient, TemplateModel, { singular: 'template', plural: 'templates' });
   }
 }
 
@@ -320,8 +332,9 @@ class UserModel {
   }
 }
 
+@inject(HttpClient)
 export class UserService extends CrudService {
-  constructor() {
-    super(UserModel, { singular: 'user', plural: 'users' });
+  constructor(httpClient) {
+    super(httpClient, UserModel, { singular: 'user', plural: 'users' });
   }
 }

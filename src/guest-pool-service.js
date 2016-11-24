@@ -1,4 +1,5 @@
 import {CrudService} from './crud-service';
+import {HttpClient} from 'aurelia-fetch-client';
 
 class GuestPoolModel {
   constructor(data, http) {
@@ -6,8 +7,9 @@ class GuestPoolModel {
   }
 }
 
+@inject(HttpClient)
 export class GuestPoolService extends CrudService {
-  constructor() {
-    super(GuestPoolModel, { singular: 'pool', plural: 'pools' });
+  constructor(httpClient) {
+    super(httpClient, GuestPoolModel, { singular: 'pool', plural: 'pools' });
   }
 }

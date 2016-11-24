@@ -1,4 +1,5 @@
 import {CrudService} from './crud-service';
+import {HttpClient} from 'aurelia-fetch-client';
 
 class HostModel {
   constructor(data, http) {
@@ -11,9 +12,10 @@ class HostModel {
   }
 }
 
+@inject(HttpClient)
 export class HostService extends CrudService {
-  constructor() {
-    super(HostModel, { singular: 'host', plural: 'hosts' });
+  constructor(httpClient) {
+    super(httpClient, HostModel, { singular: 'host', plural: 'hosts' });
   }
 
   statistics() {

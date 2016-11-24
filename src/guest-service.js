@@ -1,4 +1,5 @@
 import {CrudService} from './crud-service';
+import {HttpClient} from 'aurelia-fetch-client';
 
 class GuestModel {
   constructor(data, http) {
@@ -13,8 +14,6 @@ class GuestModel {
     ].map(action => {
       let self = this;
       this[action] = function() {
-        console.log('called: ', action);
-        console.log('   => ', 'guest/' + self.name + '/' + action);
         return http.fetch('guest/' + self.name + '/' + action, { method: 'POST' });
       };
     });
@@ -22,8 +21,9 @@ class GuestModel {
 
 }
 
+@inject(HttpClient)
 export class GuestService extends CrudService {
-  constructor() {
-    super(GuestModel, { singular: 'guest', plural: 'guests' });
+  constructor(httpClient) {
+    super(httpClient, GuestModel, { singular: 'guest', plural: 'guests' });
   }
 }

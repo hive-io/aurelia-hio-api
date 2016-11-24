@@ -1,4 +1,5 @@
 import {CrudService} from './crud-service';
+import {HttpClient} from 'aurelia-fetch-client';
 
 class BrokerModel {
   constructor(data) {
@@ -6,8 +7,9 @@ class BrokerModel {
   }
 }
 
+@inject(HttpClient)
 export class BrokerService extends CrudService {
-  constructor() {
-    super(BrokerModel, { singular: 'bus', plural: 'bus' });
+  constructor(httpClient) {
+    super(httpClient, BrokerModel, { singular: 'bus', plural: 'bus' });
   }
 }

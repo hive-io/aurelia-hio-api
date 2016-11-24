@@ -1,4 +1,5 @@
 import {CrudService} from './crud-service';
+import {HttpClient} from 'aurelia-fetch-client';
 
 class TemplateModel {
   constructor(data, http) {
@@ -6,8 +7,9 @@ class TemplateModel {
   }
 }
 
+@inject(HttpClient)
 export class TemplateService extends CrudService {
-  constructor() {
-    super(TemplateModel, { singular: 'template', plural: 'templates' });
+  constructor(httpClient) {
+    super(httpClient, TemplateModel, { singular: 'template', plural: 'templates' });
   }
 }

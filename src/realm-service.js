@@ -1,4 +1,5 @@
 import {CrudService} from './crud-service';
+import {HttpClient} from 'aurelia-fetch-client';
 
 class RealmModel {
   constructor(data, http) {
@@ -6,8 +7,9 @@ class RealmModel {
   }
 }
 
+@inject(HttpClient)
 export class RealmService extends CrudService {
-  constructor() {
-    super(RealmModel, { singular: 'realm', plural: 'realms' });
+  constructor(httpClient) {
+    super(httpClient, RealmModel, { singular: 'realm', plural: 'realms' });
   }
 }

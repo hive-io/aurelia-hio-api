@@ -2,8 +2,8 @@ import {ServiceBase} from './service-base';
 import {json} from 'aurelia-fetch-client';
 
 export class CrudService extends ServiceBase {
-  constructor(Model, options) {
-    super();
+  constructor(httpClient, Model, options) {
+    super(httpClient);
 
     this.Model = Model;
     this.endpoints = {

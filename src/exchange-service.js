@@ -1,5 +1,5 @@
 import {CrudService} from './crud-service';
-import {json} from 'aurelia-fetch-client';
+import {HttpClient, json} from 'aurelia-fetch-client';
 
 class ExchangeModel {
   constructor(data, http) {
@@ -14,8 +14,9 @@ class ExchangeModel {
   }
 }
 
+@inject(HttpClient)
 export class ExchangeService extends CrudService {
-  constructor() {
-    super(ExchangeModel, { singular: 'bus/exchange', plural: 'bus/exchange' });
+  constructor(httpClient) {
+    super(httpClient, ExchangeModel, { singular: 'bus/exchange', plural: 'bus/exchange' });
   }
 }
