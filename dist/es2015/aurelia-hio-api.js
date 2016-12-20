@@ -156,7 +156,7 @@ let GuestModel = class GuestModel {
       this.diskinfo = [{ diskUsage: 0, diskSize: 1 }];
     }
 
-    ['reset', 'suspend', 'resume', 'poweroff', 'poweron', 'undefine', 'reboot', 'shutdown'].map(action => {
+    ['reset', 'suspend', 'resume', 'poweroff', 'poweron', 'undefine', 'reboot', 'shutdown', 'delete'].map(action => {
       let self = this;
       this[action] = function () {
         return http.fetch('guest/' + self.name + '/' + action, { method: 'POST' });

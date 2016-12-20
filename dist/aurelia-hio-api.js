@@ -171,7 +171,7 @@ class GuestModel {
 
     // add guest actions
     [ 'reset', 'suspend', 'resume', 'poweroff',
-      'poweron', 'undefine', 'reboot', 'shutdown'
+      'poweron', 'undefine', 'reboot', 'shutdown', 'delete'
     ].map(action => {
       let self = this;
       this[action] = function() {

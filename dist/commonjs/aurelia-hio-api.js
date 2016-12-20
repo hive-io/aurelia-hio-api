@@ -211,7 +211,7 @@ var GuestModel = function GuestModel(data, http) {
     this.diskinfo = [{ diskUsage: 0, diskSize: 1 }];
   }
 
-  ['reset', 'suspend', 'resume', 'poweroff', 'poweron', 'undefine', 'reboot', 'shutdown'].map(function (action) {
+  ['reset', 'suspend', 'resume', 'poweroff', 'poweron', 'undefine', 'reboot', 'shutdown', 'delete'].map(function (action) {
     var self = _this5;
     _this5[action] = function () {
       return http.fetch('guest/' + self.name + '/' + action, { method: 'POST' });
