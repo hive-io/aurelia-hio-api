@@ -310,14 +310,14 @@ var SensorsMetricsService = (_dec8 = (0, _aureliaDependencyInjection.inject)(_au
   }
 
   SensorsMetricsService.prototype.list = function list(fabric) {
-    return this.http.fetch('metrics/fabric/' + fabric + '/sensors').then(function (response) {
+    return this.http.fetch('metrics/fabric/' + fabric + '/sensorsList').then(function (response) {
       return response.json();
     });
   };
 
   SensorsMetricsService.prototype.read = function read(fabric, sensor, start) {
     start = start || 3600;
-    return this.http.fetch('metrics/fabric/' + fabric + '/sensors?sensor=' + sensor + '&start=' + start).then(function (response) {
+    return this.http.fetch('metrics/fabric/' + fabric + '/sensor/' + sensor + '?start=' + start).then(function (response) {
       return response.json();
     });
   };

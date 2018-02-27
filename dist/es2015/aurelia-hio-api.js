@@ -220,12 +220,12 @@ let SensorsMetricsService = (_dec8 = inject(HttpClient), _dec8(_class8 = class S
     super(httpClient);
   }
   list(fabric) {
-    return this.http.fetch('metrics/fabric/' + fabric + '/sensors').then(response => response.json());
+    return this.http.fetch('metrics/fabric/' + fabric + '/sensorsList').then(response => response.json());
   }
 
   read(fabric, sensor, start) {
     start = start || 3600;
-    return this.http.fetch('metrics/fabric/' + fabric + '/sensors?sensor=' + sensor + '&start=' + start).then(response => response.json());
+    return this.http.fetch('metrics/fabric/' + fabric + '/sensor/' + sensor + '?start=' + start).then(response => response.json());
   }
 }) || _class8);
 

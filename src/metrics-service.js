@@ -26,13 +26,13 @@ class CpuMetricsService extends ServiceBase {
 class SensorsMetricsService extends ServiceBase {
   constructor(httpClient) { super(httpClient); }
   list(fabric) {
-    return this.http.fetch('metrics/fabric/' + fabric + '/sensors')
+    return this.http.fetch('metrics/fabric/' + fabric + '/sensorsList')
       .then(response => response.json());
   }
 
   read(fabric, sensor, start) {
     start = start || 3600;  // 1hr
-    return this.http.fetch('metrics/fabric/' + fabric + '/sensors?sensor=' + sensor + '&start=' + start)
+    return this.http.fetch('metrics/fabric/' + fabric + '/sensor/' + sensor + '&start=' + start)
       .then(response => response.json());
   }
 }
