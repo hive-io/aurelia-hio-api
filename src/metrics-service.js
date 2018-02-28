@@ -32,7 +32,7 @@ class SensorsMetricsService extends ServiceBase {
 
   read(fabric, sensor, start) {
     start = start || 3600;  // 1hr
-    return this.http.fetch('metrics/fabric/' + fabric + '/sensor/' + sensor + '&start=' + start)
+    return this.http.fetch('metrics/fabric/' + fabric + '/sensor/' + sensor + '?start=' + start)
       .then(response => response.json());
   }
 }
